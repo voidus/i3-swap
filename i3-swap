@@ -14,13 +14,13 @@ def main():
     focused_workspace = [w['name'] for w in workspaces if w['focused']][0]
 
     if len(workspaces) == 2:
-        i3.command('workspace', workspaces[0])
+        i3.command('workspace', '--no-auto-back-and-forth', workspaces[0])
         i3.command('move', 'workspace to output right')
 
         # Hacky fix for race condition
         time.sleep(0.01)
 
-        i3.command('workspace', workspaces[1])
+        i3.command('workspace', '--no-auto-back-and-forth', workspaces[1])
         i3.command('move', 'workspace to output left')
 
         i3.command('workspace', focused_workspace)
