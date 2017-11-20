@@ -10,18 +10,18 @@ def main():
     workspaces = i3.get_workspaces()
 
     # Only include outputs with active: True
-    workspaces = [o['current_workspace'] for o in outputs if o['active']]
+    outputs = [o for o in outputs if o['active']]
     focused_workspace = [w['name'] for w in workspaces if w['focused']][0]
 
     if len(workspaces) == 2:
-        i3.command('workspace', '--no-auto-back-and-forth', workspaces[0])
-        i3.command('move', 'workspace to output right')
+        i3.command('workspace', '--no-auto-back-and-forth', outputs[0]['current_workspace'])
+        i3.command('move', 'workspace to output', outputs[1]['name'])
 
         # Hacky fix for race condition
         time.sleep(0.01)
 
-        i3.command('workspace', '--no-auto-back-and-forth', workspaces[1])
-        i3.command('move', 'workspace to output left')
+        i3.command('workspace', '--no-auto-back-and-forth', outputs[1]['current_workspace'])
+        i3.command('move', 'workspace to output', outputs[0]['name'])
 
         i3.command('workspace', focused_workspace)
     elif len(outputs) < 2:
