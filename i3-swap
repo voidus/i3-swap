@@ -3,7 +3,9 @@
 # Script to swap which workspace is on which monitor (output)
 # Might not work as expected if at least one workspace is empty
 
-import i3, time
+import i3
+import time
+
 
 def main():
     outputs = i3.get_outputs()
@@ -14,13 +16,15 @@ def main():
     focused_workspace = [w['name'] for w in workspaces if w['focused']][0]
 
     if len(workspaces) == 2:
-        i3.command('workspace', '--no-auto-back-and-forth', outputs[0]['current_workspace'])
+        i3.command('workspace', '--no-auto-back-and-forth',
+                   outputs[0]['current_workspace'])
         i3.command('move', 'workspace to output', outputs[1]['name'])
 
         # Hacky fix for race condition
         time.sleep(0.01)
 
-        i3.command('workspace', '--no-auto-back-and-forth', outputs[1]['current_workspace'])
+        i3.command('workspace', '--no-auto-back-and-forth',
+                   outputs[1]['current_workspace'])
         i3.command('move', 'workspace to output', outputs[0]['name'])
 
         i3.command('workspace', focused_workspace)
@@ -28,6 +32,7 @@ def main():
         print('Not enough outputs')
     else:
         print('Too many outputs')
+
 
 if __name__ == '__main__':
     main()
