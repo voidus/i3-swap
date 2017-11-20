@@ -10,7 +10,8 @@ def main():
     workspaces = i3.get_workspaces()
 
     # Only include outputs with active: True
-    workspaces = [o['current_workspace'] for o in outputs if o['active'] is True]
+    workspaces = [o['current_workspace'] for o in outputs if o['active']]
+    focused_workspace = [w['name'] for w in workspaces if w['focused']][0]
 
     if len(workspaces) == 2:
         i3.command('workspace', workspaces[0])
@@ -21,6 +22,8 @@ def main():
 
         i3.command('workspace', workspaces[1])
         i3.command('move', 'workspace to output left')
+
+        i3.command('workspace', focused_workspace)
     elif len(outputs) < 2:
         print('Not enough outputs')
     else:
